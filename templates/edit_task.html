@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Task - Task Manager{% endblock %}
+
+{% block content %}
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: #f8f9fa;
+        padding: 30px;
+        border-radius: 10px;
+    }
+    
+    .form-container h2 {
+        color: #667eea;
+        margin-bottom: 25px;
+    }
+    
+    .form-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+</style>
+
+<div class="form-container">
+    <h2>Edit Task</h2>
+    
+    <form method="POST">
+        <div class="form-group">
+            <label for="title">Task Title *</label>
+            <input type="text" id="title" name="title" value="{{ task.title }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description">{{ task.description or '' }}</textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="priority">Priority</label>
+            <select id="priority" name="priority" required>
+                <option value="low" {% if task.priority == 'low' %}selected{% endif %}>Low</option>
+                <option value="medium" {% if task.priority == 'medium' %}selected{% endif %}>Medium</option>
+                <option value="high" {% if task.priority == 'high' %}selected{% endif %}>High</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="status">Status</label>
+            <select id="status" name="status" required>
+                <option value="pending" {% if task.status == 'pending' %}selected{% endif %}>Pending</option>
+                <option value="completed" {% if task.status == 'completed' %}selected{% endif %}>Completed</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="due_date">Due Date</label>
+            <input type="date" id="due_date" name="due_date" 
+                   value="{% if task.due_date %}{{ task.due_date.strftime('%Y-%m-%d') }}{% endif %}">
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Update Task</button>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-warning">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
